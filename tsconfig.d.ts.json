@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "outFile": "./dist/p-chan.js",
+        "sourceMap": false,
+        "strict": true,
+        "module": "system",
+        "moduleResolution": "node",
+        "target": "es2017",
+        "jsx": "react",
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "types": [ "node" ]
+    },
+    "files": [
+        "./src/p-chan.ts"
+    ]
+}
