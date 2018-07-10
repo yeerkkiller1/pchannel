@@ -55,7 +55,7 @@ export class PChan<T> {
         }
     }
 
-    public GetPromise(): Promise<T | PromiseLike<T>> {
+    public GetPromise(): Promise<T> {
         let sentObj = this.sentValues.shift();
         if(sentObj) {
             if("value" in sentObj) {
@@ -100,7 +100,17 @@ export class PChan<T> {
                 this.errorOutOnClosed();
             }
 
-            return promise;
+            // Okay... MDN says about Promise.resolve (which appears to apply to just calling resolve inside a promise):
+            /*
+                Returns a Promise object that is resolved with the given value. If the value is a thenable (i.e. has a then method),
+                    the returned promise will "follow" that thenable, adopting its eventual state; otherwise the returned promise
+                    will be fulfilled with the value. 
+            */
+            // Which means the lib.es5.d.ts spec for Promise.then is actually incorrect. It should be manipulating the result if
+            //  it is thenable, and following it (which is actually possible now). However... I can't change that, and while I SHOULD
+            //  create a type to correctly map my input T to my outputs, that is too much work for now. So... I'll just at least not
+            //  FORCE the returned promise to have T equal to a Promise, and it will work for now.
+            return promise as Promise<T>;
         }
     }
 
