@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./dist/",
-        "outFile": "./dist/p-chan.js",
+        "outFile": "./dist/pchannel.js",
         "sourceMap": false,
         "strict": true,
         "module": "system",
@@ -13,6 +13,6 @@
         "types": [ "node" ]
     },
     "files": [
-        "./src/p-chan.ts"
+        "./src/pchannel.ts"
     ]
 }

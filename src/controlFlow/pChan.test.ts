@@ -1,5 +1,5 @@
 import { throwsAsync, ThrowIfNotImplementsData, throws } from "../reflection/assert";
-import { pchan } from "../p-chan";
+import { pchan } from "../pchannel";
 import { SetDefaultTimeout, PChan } from "./pChan";
 import { SetTimeoutAsync } from "./promise";
 

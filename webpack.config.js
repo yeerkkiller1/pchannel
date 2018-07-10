@@ -12,10 +12,10 @@ function getConfig (env) {
     let obj = {
         mode: "development",
         entry: {
-            index: "./src/p-chan.ts"
+            index: "./src/pchannel.ts"
         },
         output: {
-            filename: "./p-chan.js",
+            filename: "./pchannel.js",
             libraryTarget: "commonjs2"
         },
 
