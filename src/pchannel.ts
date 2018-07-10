@@ -28,7 +28,7 @@ const _ThrowsAsync: (code: () => Promise<void>) => Promise<void> = ThrowsAsync;
 type _PChanType<T> = {
     SendValue(value: T | PromiseLike<T>): void;
     SendError(error: any): void;
-    GetPromise(): Promise<T | PromiseLike<T>>;
+    GetPromise(): Promise<T>;
     IsClosed(): boolean;
     Close(): void;
 };
