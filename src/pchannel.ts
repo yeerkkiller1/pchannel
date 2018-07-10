@@ -36,6 +36,7 @@ type _PChanType<T> = {
 const _pchan: <T>(promiseErrorTimeout?: number) => _PChanType<T> = pchan;
 const _PChan: { new <T>(promiseErrorTimeout?: number): _PChanType<T> } = PChan;
 
+let _g: any = Function('return this')();
 
 export {
     _ThrowIfNotImplementsData as ThrowIfNotImplementsData,
@@ -56,4 +57,6 @@ export {
 
     _pchan as pchan,
     _PChan as PChan,
+
+    _g as g
 };
