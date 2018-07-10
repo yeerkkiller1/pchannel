@@ -1,32 +1,32 @@
-import { throws, ThrowIfNotImplementsData } from "./assert";
+import { Throws, ThrowIfNotImplementsData } from "./assert";
 
 describe("types for testing", () => {
     describe("throwIfNotImplementsData", () => {
         it("can throw", () => {
-            throws(() => {
+            Throws(() => {
                 ThrowIfNotImplementsData({x: 5}, {x: 6});
             });
         });
 
         it("can throw when extra array element", () => {
-            throws(() => {
+            Throws(() => {
                 ThrowIfNotImplementsData([1], []);
             });
         });
 
         it("can throw when missing array element", () => {
-            throws(() => {
+            Throws(() => {
                 ThrowIfNotImplementsData([], [1]);
             });
         });
 
         it("can throw when array instead of object", () => {
-            throws(() => {
+            Throws(() => {
                 ThrowIfNotImplementsData([], {});
             });
         });
         it("can throw when object instead of array", () => {
-            throws(() => {
+            Throws(() => {
                 ThrowIfNotImplementsData({}, []);
             });
         });

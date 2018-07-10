@@ -247,7 +247,7 @@ export function notImplementsData(proposedData: Types.AnyAll, dataContract: Type
     return path;
 }
 
-export function throws(code: () => void): void {
+export function Throws(code: () => void): void {
     try {
         let result = code();
     } catch(e) {
@@ -258,7 +258,7 @@ export function throws(code: () => void): void {
     /* ignore coverage */ throw new Error("Expected an error");
 }
 
-export function throwsAsync(code: () => Promise<void>): Promise<void> {
+export function ThrowsAsync(code: () => Promise<void>): Promise<void> {
     try {
         let result = code();
         return new Promise((resolve, reject) => {

@@ -1,6 +1,5 @@
-import { throwsAsync, ThrowIfNotImplementsData, throws } from "../reflection/assert";
-import { pchan } from "../pchannel";
-import { SetDefaultTimeout, PChan } from "./pChan";
+import { ThrowsAsync, ThrowIfNotImplementsData, Throws } from "../reflection/assert";
+import { SetDefaultTimeout, PChan, pchan } from "./pChan";
 import { SetTimeoutAsync } from "./promise";
 
 describe("pchan", () => {
@@ -8,7 +7,7 @@ describe("pchan", () => {
         it("throws on timeout", async () => {
             let test = pchan();
 
-            await throwsAsync(async () => {
+            await ThrowsAsync(async () => {
                 await test.GetPromise();
             });
         });
@@ -16,7 +15,7 @@ describe("pchan", () => {
         it("throws on double close", () => {
             let chan = pchan();
             chan.Close();
-            throws(() => {
+            Throws(() => {
                 chan.Close();
             });
         });
@@ -24,10 +23,10 @@ describe("pchan", () => {
         it("throws on sending on closed connection", () => {
             let chan = pchan();
             chan.Close();
-            throws(() => {
+            Throws(() => {
                 chan.SendValue(1);
             });
-            throws(() => {
+            Throws(() => {
                 chan.SendError(1);
             });
         });
@@ -35,7 +34,7 @@ describe("pchan", () => {
         it("throws on getting on closed connection", async () => {
             let chan = pchan();
             chan.Close();
-            await throwsAsync(async () => {
+            await ThrowsAsync(async () => {
                 await chan.GetPromise();
             });
         });
@@ -121,7 +120,7 @@ describe("pchan", () => {
             let chan = pchan();
             let p1 = chan.GetPromise();
             chan.Close();
-            await throwsAsync(async () => {
+            await ThrowsAsync(async () => {
                 await p1;
             });
         });

@@ -1,31 +1,59 @@
 /// <reference path="./src.d.ts" />
 
-import { ThrowIfNotImplementsData, AnyOrder, ObjectExact, Opt } from "./reflection/assert";
+import { ThrowIfNotImplementsData, AnyOrder, ObjectExact, Opt, Throws, ThrowsAsync } from "./reflection/assert";
 import { IsNumber, IsInteger, IsPrimitive, CanHaveChildren, IsArray } from "./reflection/type";
 import { IsEmpty } from "./reflection/misc";
 import { SetTimeoutAsync } from "./controlFlow/promise";
 import { pchan, PChan } from "./controlFlow/pChan";
 
-// Replace ws-class stuff with p-chan, and then make this expose a function call pChan, which is createPromiseStream, but:
-//  - Supports closing the connection (and returns error promises on reading from a closed connection, and also errors out all promises
-//    that are pending)
-//  - that handles infinitely recursive Promise<T> resolve nesting, via using the Promise typings
+// Redeclare all types, so we don't expose our internal modules
+
+
+const _ThrowIfNotImplementsData: (proposedData: Types.AnyAll, dataContract: Types.AnyAll) => void = ThrowIfNotImplementsData;
+const _AnyOrder: <T extends Types.AnyAll>(value: T) => T = AnyOrder;
+const _ObjectExact: <T extends Types.AnyAll>(value: T) => T = ObjectExact;
+const _Opt: <T extends Types.AnyAll>(value: T) => T = Opt;
+
+const _IsNumber: (str: string) => boolean = IsNumber;
+const _IsInteger: (num: number) => boolean = IsInteger;
+const _IsPrimitive: (value: Types.AnyAll) => value is Types.Primitive = IsPrimitive;
+const _CanHaveChildren: (value: Types.AnyAll) => value is Types.Dictionary = CanHaveChildren;
+const _IsArray: (obj: Types.AnyAll) => obj is Types.Arr = IsArray;
+const _IsEmpty: <T>(obj: {[key: string]: T}) => boolean = IsEmpty;
+
+const _SetTimeoutAsync: (time: number) => Promise<void> = SetTimeoutAsync;
+const _Throws: (code: () => void) => void = Throws;
+const _ThrowsAsync: (code: () => Promise<void>) => Promise<void> = ThrowsAsync;
+
+type _PChanType<T> = {
+    SendValue(value: T | PromiseLike<T>): void;
+    SendError(error: any): void;
+    GetPromise(): Promise<T | PromiseLike<T>>;
+    IsClosed(): boolean;
+    Close(): void;
+};
+
+const _pchan: <T>(promiseErrorTimeout?: number) => _PChanType<T> = pchan;
+const _PChan: { new <T>(promiseErrorTimeout?: number): _PChanType<T> } = PChan;
+
 
 export {
-    ThrowIfNotImplementsData,
-    AnyOrder,
-    ObjectExact,
-    Opt,
+    _ThrowIfNotImplementsData as ThrowIfNotImplementsData,
+    _AnyOrder as AnyOrder,
+    _ObjectExact as ObjectExact,
+    _Opt as Opt,
 
-    IsNumber,
-    IsInteger,
-    IsPrimitive,
-    CanHaveChildren,
-    IsArray,
-    IsEmpty,
+    _IsNumber as IsNumber,
+    _IsInteger as IsInteger,
+    _IsPrimitive as IsPrimitive,
+    _CanHaveChildren as CanHaveChildren,
+    _IsArray as IsArray,
+    _IsEmpty as IsEmpty,
 
-    SetTimeoutAsync,
+    _SetTimeoutAsync as SetTimeoutAsync,
+    _Throws as Throws,
+    _ThrowsAsync as ThrowsAsync,
 
-    pchan,
-    PChan
+    _pchan as pchan,
+    _PChan as PChan,
 };
