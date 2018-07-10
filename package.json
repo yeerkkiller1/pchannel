@@ -2,14 +2,15 @@
   "scripts": {
     "start": "bash watch.sh"
   },
-  "name": "p-chan",
-  "version": "0.1.0",
+  "name": "pchannel",
+  "version": "0.1.1",
   "main": "./dist/p-chan.js",
   "types": "./dist/p-chan.d.ts",
   "author": "yeerkkiller1 <yeerkkiller1@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    
+  "description": "Another promise channel/stream library",
+  "repository": {
+    "url": "https://github.com/yeerkkiller1/pchannel"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.7",
