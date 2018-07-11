@@ -25,6 +25,8 @@ const _SetTimeoutAsync: (time: number) => Promise<void> = SetTimeoutAsync;
 const _Throws: (code: () => void) => void = Throws;
 const _ThrowsAsync: (code: () => Promise<void>) => Promise<void> = ThrowsAsync;
 
+export type PChan<T> = { new (promiseErrorTimeout?: number): _PChanType<T> };
+
 type _PChanType<T> = {
     SendValue(value: T | PromiseLike<T>): void;
     SendError(error: any): void;
