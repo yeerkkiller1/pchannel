@@ -1,6 +1,6 @@
 import { g } from "../reflection/misc";
 
-export function SetDefaultTimeout(timeout: number, code: () => void) {
+export function SetDefaultTimeout(timeout: number|undefined, code: () => void) {
     let prevTimeout = g.PROMISE_defaultTimeout;
     g.PROMISE_defaultTimeout = timeout;
     try {
@@ -17,7 +17,6 @@ export function pchan<T>(promiseErrorTimeout: number = g.PROMISE_defaultTimeout)
 
 export class PChan<T> {
     constructor (
-        /** -1 means infinite */
         private promiseErrorTimeout: number = g.PROMISE_defaultTimeout
     ) { }
 
@@ -67,7 +66,7 @@ export class PChan<T> {
             let promise = new Promise<T | PromiseLike<T>>((resolve, reject) => {
                 let resolved = false;
                 let errorTimeout: NodeJS.Timer|undefined = undefined;
-                if(!this.closed && this.promiseErrorTimeout !== -1) {
+                if(!this.closed && this.promiseErrorTimeout !== undefined) {
                     errorTimeout = setTimeout(() => {
                         resolved = true;
                         for(let i = 0; i < this.getValues.length; i++) {

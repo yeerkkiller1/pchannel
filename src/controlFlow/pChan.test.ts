@@ -43,7 +43,7 @@ describe("pchan", () => {
     describe("misc", () => {
         it("SetDefaultTimeout", async () => {
             let chan!: PChan<number>;
-            SetDefaultTimeout(10000, () => {
+            SetDefaultTimeout(undefined, () => {
                 chan = pchan();
             });
             let p = chan.GetPromise();
