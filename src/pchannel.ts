@@ -25,9 +25,7 @@ const _SetTimeoutAsync: (time: number) => Promise<void> = SetTimeoutAsync;
 const _Throws: (code: () => void) => void = Throws;
 const _ThrowsAsync: (code: () => Promise<void>) => Promise<void> = ThrowsAsync;
 
-export type PChan<T> = { new (promiseErrorTimeout?: number): _PChanType<T> };
-
-type _PChanType<T> = {
+export type PChan<T> = {
     SendValue(value: T | PromiseLike<T>): void;
     SendError(error: any): void;
     GetPromise(): Promise<T>;
@@ -35,8 +33,8 @@ type _PChanType<T> = {
     Close(): void;
 };
 
-const _pchan: <T>(promiseErrorTimeout?: number) => _PChanType<T> = pchan;
-const _PChan: { new <T>(promiseErrorTimeout?: number): _PChanType<T> } = PChan;
+const _pchan: <T>(promiseErrorTimeout?: number) => PChan<T> = pchan;
+const _PChan: { new <T>(promiseErrorTimeout?: number): PChan<T> } = PChan;
 
 let _g: any = Function('return this')();
 
