@@ -4,7 +4,7 @@ import { ThrowIfNotImplementsData, AnyOrder, ObjectExact, Opt, Throws, ThrowsAsy
 import { IsNumber, IsInteger, IsPrimitive, CanHaveChildren, IsArray } from "./reflection/type";
 import { IsEmpty } from "./reflection/misc";
 import { SetTimeoutAsync } from "./controlFlow/promise";
-import { pchan, PChan } from "./controlFlow/pChan";
+import { pchan, PChan, SetDefaultTimeout } from "./controlFlow/pChan";
 
 // Redeclare all types, so we don't expose our internal modules
 
@@ -25,17 +25,6 @@ const _SetTimeoutAsync: (time: number) => Promise<void> = SetTimeoutAsync;
 const _Throws: (code: () => void) => void = Throws;
 const _ThrowsAsync: (code: () => Promise<void>) => Promise<void> = ThrowsAsync;
 
-export type PChan<T> = {
-    SendValue(value: T | PromiseLike<T>): void;
-    SendError(error: any): void;
-    GetPromise(): Promise<T>;
-    IsClosed(): boolean;
-    Close(): void;
-};
-
-const _pchan: <T>(promiseErrorTimeout?: number) => PChan<T> = pchan;
-const _PChan: { new <T>(promiseErrorTimeout?: number): PChan<T> } = PChan;
-
 let _g: any = Function('return this')();
 
 export {
@@ -55,8 +44,9 @@ export {
     _Throws as Throws,
     _ThrowsAsync as ThrowsAsync,
 
-    _pchan as pchan,
-    _PChan as PChan,
+    pchan,
+    PChan,
+    SetDefaultTimeout,
 
     _g as g
 };
