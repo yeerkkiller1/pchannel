@@ -2,7 +2,7 @@
 
 import { ThrowIfNotImplementsData, AnyOrder, ObjectExact, Opt, Throws, ThrowsAsync } from "./reflection/assert";
 import { IsNumber, IsInteger, IsPrimitive, CanHaveChildren, IsArray } from "./reflection/type";
-import { IsEmpty } from "./reflection/misc";
+import { IsEmpty, Range } from "./reflection/misc";
 import { SetTimeoutAsync } from "./controlFlow/promise";
 import { pchan, PChan, SetDefaultTimeout } from "./controlFlow/pChan";
 
@@ -19,7 +19,6 @@ const _IsInteger: (num: number) => boolean = IsInteger;
 const _IsPrimitive: (value: Types.AnyAll) => value is Types.Primitive = IsPrimitive;
 const _CanHaveChildren: (value: Types.AnyAll) => value is Types.Dictionary = CanHaveChildren;
 const _IsArray: (obj: Types.AnyAll) => obj is Types.Arr = IsArray;
-const _IsEmpty: <T>(obj: {[key: string]: T}) => boolean = IsEmpty;
 
 const _SetTimeoutAsync: (time: number) => Promise<void> = SetTimeoutAsync;
 const _Throws: (code: () => void) => void = Throws;
@@ -38,8 +37,7 @@ export {
     _IsPrimitive as IsPrimitive,
     _CanHaveChildren as CanHaveChildren,
     _IsArray as IsArray,
-    _IsEmpty as IsEmpty,
-
+    
     _SetTimeoutAsync as SetTimeoutAsync,
     _Throws as Throws,
     _ThrowsAsync as ThrowsAsync,
@@ -47,6 +45,9 @@ export {
     pchan,
     PChan,
     SetDefaultTimeout,
+
+    IsEmpty,
+    Range,
 
     _g as g
 };
