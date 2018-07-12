@@ -1,14 +1,20 @@
 import { pchan } from "./pChan";
 
+export type TransformedChannel<Input, Output> = (
+    (
+        (input: Input) => Promise<Output>
+    ) & {
+        Close(): void;
+    }
+);
+
 /** Creates a channel that transforms the input, to the output, by calling the tranform function, but only in serial.
  *      I guess this is more like a real channel? Or it could be called a two way channel?
  */
 export function TransformChannel<Input, Output>(
     transform: (input: Input) => Promise<Output>,
     afterClose?: () => void,
-): ((input: Input) => Promise<Output>) & {
-    Close(): void;
-} {
+): TransformedChannel<Input, Output> {
     let inputChan = pchan<Input>();
     let outputChan = pchan<Output>();
 
