@@ -11,8 +11,5 @@
         "emitDeclarationOnly": true,
         "declaration": true,
         "types": [ "node", "jasmine" ]
-    },
-    "files": [
-        "./src/pchannel.ts"
-    ]
+    }
 }

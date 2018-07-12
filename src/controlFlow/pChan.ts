@@ -31,6 +31,10 @@ export class PChan<T> {
         reject: (err: any) => void;
     }[] = [];
 
+    public HasValues(): boolean {
+        return this.sentValues.length > 0;
+    }
+
     public SendValue(value: T | PromiseLike<T>) {
         if(this.closed) {
             throw new Error(`Tried to send on closed connection`);
@@ -55,6 +59,7 @@ export class PChan<T> {
     }
 
     public GetPromise(): Promise<T> {
+        // Allow reading of already received values, even if we are closed.
         let sentObj = this.sentValues.shift();
         if(sentObj) {
             if("value" in sentObj) {
@@ -125,7 +130,8 @@ export class PChan<T> {
         this.errorOutOnClosed();
     }
     private errorOutOnClosed() {
-        this.sentValues = [];
+        // Leave sent values, we can still read already received values even if we are closed
+        //this.sentValues = [];
         // Error out all getValues
         while(true) {
             let getObj = this.getValues.shift();
