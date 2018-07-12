@@ -5,6 +5,7 @@ import { IsNumber, IsInteger, IsPrimitive, CanHaveChildren, IsArray } from "./re
 import { IsEmpty, Range } from "./reflection/misc";
 import { SetTimeoutAsync } from "./controlFlow/promise";
 import { pchan, PChan, SetDefaultTimeout } from "./controlFlow/pChan";
+import { TransformChannel } from "./controlFlow/transform";
 
 // Redeclare all types, so we don't expose our internal modules
 
@@ -48,6 +49,8 @@ export {
 
     IsEmpty,
     Range,
+
+    TransformChannel,
 
     _g as g
 };
