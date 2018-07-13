@@ -6,6 +6,7 @@ import { IsEmpty, Range } from "./reflection/misc";
 import { SetTimeoutAsync } from "./controlFlow/promise";
 import { pchan, PChan, SetDefaultTimeout } from "./controlFlow/pChan";
 import { TransformChannel, TransformedChannel } from "./controlFlow/transform";
+import { Deferred } from "./controlFlow/Deferred";
 
 // Redeclare all types, so we don't expose our internal modules
 
@@ -52,6 +53,8 @@ export {
 
     TransformChannel,
     TransformedChannel,
+
+    Deferred,
 
     _g as g
 };
