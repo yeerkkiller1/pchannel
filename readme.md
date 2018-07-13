@@ -1,1 +1,0 @@
-Another promise channel/stream library

@@ -3,7 +3,7 @@
     "start": "bash watch.sh"
   },
   "name": "pchannel",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "./dist/pchannel.js",
   "types": "./dist/pchannel.d.ts",
   "author": "yeerkkiller1 <yeerkkiller1@gmail.com>",
@@ -12,7 +12,6 @@
   "repository": {
     "url": "https://github.com/yeerkkiller1/pchannel"
   },
-  "readme": "readme.md",
   "devDependencies": {
     "@types/jasmine": "^2.8.7",
     "@types/node": "^7.0.12",
