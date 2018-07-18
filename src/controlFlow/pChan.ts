@@ -15,7 +15,21 @@ export function pchan<T>(promiseErrorTimeout: number = g.PROMISE_defaultTimeout)
     return new PChan<T>(promiseErrorTimeout);
 }
 
-export class PChan<T> {
+export interface PChanReceive<T> {
+    OnClosed: Promise<void>;
+    HasValues(): boolean;
+    GetPromise(): Promise<T>;
+    IsClosed(): boolean;
+    Close(): void;
+}
+export interface PChanSend<T> {
+    OnClosed: Promise<void>;
+    GetPromise(): Promise<T>;
+    IsClosed(): boolean;
+    Close(): void;
+}
+
+export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
     constructor (
         private promiseErrorTimeout: number = g.PROMISE_defaultTimeout
     ) { }
