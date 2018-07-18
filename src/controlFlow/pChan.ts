@@ -21,6 +21,10 @@ export class PChan<T> {
     ) { }
 
     private closed = false;
+    private onClosed!: () => void;
+    public OnClosed = new Promise<void>((resolve, reject) => {
+        this.onClosed = resolve;
+    });
 
     // With synchronous handling only one of these lists will have values at once (or none).
     //  BUT, if we added artificial latency, (to simulate a network connection), both lists COULD have values.
@@ -126,6 +130,7 @@ export class PChan<T> {
             throw new Error(`Tried to close already closed PChan.`);
         }
         this.closed = true;
+        this.onClosed();
 
         this.errorOutOnClosed();
     }
