@@ -3,7 +3,7 @@
     "start": "bash watch.sh"
   },
   "name": "pchannel",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "main": "./dist/pchannel.js",
   "types": "./dist/pchannel.d.ts",
   "author": "yeerkkiller1 <yeerkkiller1@gmail.com>",
