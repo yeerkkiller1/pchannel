@@ -21,12 +21,14 @@ export interface PChanReceive<T> {
     GetPromise(): Promise<T>;
     IsClosed(): boolean;
     Close(): void;
+    IsClosedError(err: any): boolean;
 }
 export interface PChanSend<T> {
     OnClosed: Promise<void>;
     GetPromise(): Promise<T>;
     IsClosed(): boolean;
     Close(): void;
+    IsClosedError(err: any): boolean;
 }
 
 export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
