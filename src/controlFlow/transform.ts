@@ -50,6 +50,8 @@ export type TransformedChannelAsync<Input, Output> = (input: PChanReceive<Input>
 /** Wraps a function (presumably an infinite loop) with logic to nicely bundle it up into something which transform an input
  *      channel into an output channel. Either channel being closed, or the main loop exiting closes everything.
  * 
+ * When the main promise resolves (or rejects), both channels will be closed, and nothing else should be attempted to be emitted.
+ * 
  * TODO: Add a while(true) transform mode, where we put some code in a while true loop, allowing errors to be caught,
  *      printed, and then the loop to be run again with new data.
  */
@@ -62,39 +64,37 @@ export function TransformChannelAsync<Input, Output>(
     ) => Promise<void>
 ): TransformedChannelAsync<Input, Output> {
     return function channelFnc(input: PChanReceive<Input>): PChanReceive<Output> {
-        // parsing start codes like this takes about 1.5ms per frame on a 5 dollar digital ocean instance. Which... should be fast enough.
         let output = new PChan<Output>();
 
-        let closed = false;
-        input.OnClosed.then(() => {
-            if(closed) return;
-            closed = true;
-            if(!output.IsClosed()) {
-                output.Close();
-            }
-        });
+        // If we can't send output, don't bother taking more input
+        //  BUT, if when input closes output is necessarily done. The main function may asynchronously emit more output.
         output.OnClosed.then(() => {
-            if(closed) return;
-            closed = true;
-            if(!input.IsClosed()) {
+            if (!input.IsClosed()) {
                 input.Close();
             }
         });
+
+        // Close both channels when the main function finishes (or it's promise does), as then their code should be done.
+        function closeAll() {
+            if (!output.IsClosed()) {
+                output.Close();
+            }
+            if (!input.IsClosed()) {
+                input.Close();
+            }
+        }
 
         main({
             inputChan: input,
             outputChan: output,
-        }).then(result => {
-            if(!input.IsClosed()) {
-                input.Close();
-            }
+        }).then(() => {
+            closeAll();
         }).catch(error => {
             if(!input.IsClosedError(error)) {
-                console.error(`TransformChannelAsync main loop ended with an error ${String(error)}`);
+                // Send the error to whomever is receiving our output. They probably want to know the main function died.
+                output.SendError(error);
             }
-            if(!input.IsClosed()) {
-                input.Close();
-            }
+            closeAll();
         });
 
         return output;
