@@ -145,9 +145,7 @@ export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
     private closeSymbol = Symbol();
     public Close() {
         if(this.closed) {
-            let err = new Error(`Tried to close already closed PChan.`);
-            (err as any)["closeSymbol"] = this.closeSymbol;
-            throw err;
+            throw new Error(`Tried to close already closed PChan.`);
         }
         this.closed = true;
         this.onClosed();
@@ -161,7 +159,9 @@ export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
         while(true) {
             let getObj = this.getValues.shift();
             if(!getObj) break;
-            getObj.reject(new Error(`PChan closed`));
+            let err = new Error(`PChan closed`);
+            (err as any)["closeSymbol"] = this.closeSymbol;
+            getObj.reject(err);
         }
     }
 
