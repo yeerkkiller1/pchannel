@@ -25,7 +25,8 @@ export interface PChanReceive<T> {
 }
 export interface PChanSend<T> {
     OnClosed: Promise<void>;
-    GetPromise(): Promise<T>;
+    SendValue(value: T): void;
+    SendError(err: any): void;
     IsClosed(): boolean;
     Close(): void;
     IsClosedError(err: any): boolean;
