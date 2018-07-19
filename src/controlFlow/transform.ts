@@ -1,4 +1,4 @@
-import { pchan } from "./pChan";
+import { pchan, PChanReceive, PChanSend, PChan } from "./pChan";
 
 export type TransformedChannel<Input, Output> = (
     (
@@ -47,4 +47,58 @@ export function TransformChannel<Input, Output>(
             inputChan.Close();
         }
     });
+}
+
+/** Wraps a function (presumably an infinite loop) with logic to nicely bundle it up into something which transform an input
+ *      channel into an output channel. Either channel being closed, or the main loop exiting closes everything.
+ * 
+ * TODO: Add a while(true) transform mode, where we put some code in a while true loop, allowing errors to be caught,
+ *      printed, and then the loop to be run again with new data.
+ */
+export function TransformChannelAsync<Input, Output>(
+    main: (
+        params: {
+            inputChan: PChanReceive<Input>;
+            outputChan: PChanSend<Output>;
+        }
+    ) => Promise<void>
+) {
+    return function channelFnc(input: PChanReceive<Input>): PChanReceive<Output> {
+        // parsing start codes like this takes about 1.5ms per frame on a 5 dollar digital ocean instance. Which... should be fast enough.
+        let output = new PChan<Output>();
+
+        let closed = false;
+        input.OnClosed.then(() => {
+            if(closed) return;
+            closed = true;
+            if(!output.IsClosed()) {
+                output.Close();
+            }
+        });
+        output.OnClosed.then(() => {
+            if(closed) return;
+            closed = true;
+            if(!input.IsClosed()) {
+                input.Close();
+            }
+        });
+
+        main({
+            inputChan: input,
+            outputChan: output,
+        }).then(result => {
+            if(!input.IsClosed()) {
+                input.Close();
+            }
+        }).catch(error => {
+            if(!input.IsClosedError(error)) {
+                console.error(`TransformChannelAsync main loop ended with an error ${String(error)}`);
+            }
+            if(!input.IsClosed()) {
+                input.Close();
+            }
+        });
+
+        return output;
+    }
 }
