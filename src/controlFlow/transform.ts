@@ -1,10 +1,6 @@
 import { pchan, PChanReceive, PChanSend, PChan } from "./pChan";
 
-export type TransformedChannel<Input, Output> = (
-    (
-        (input: Input) => Promise<Output>
-    )
-);
+export type TransformedChannel<Input, Output> = (input: Input) => Promise<Output>;
 
 /** Creates a channel that transforms the input, to the output, by calling the tranform function, but only in serial.
  *      I guess this is more like a real channel? Or it could be called a two way channel?
@@ -49,6 +45,8 @@ export function TransformChannel<Input, Output>(
     });
 }
 
+export type TransformedChannelAsync<Input, Output> = (input: PChanReceive<Input>) => PChanReceive<Output>;
+
 /** Wraps a function (presumably an infinite loop) with logic to nicely bundle it up into something which transform an input
  *      channel into an output channel. Either channel being closed, or the main loop exiting closes everything.
  * 
@@ -62,7 +60,7 @@ export function TransformChannelAsync<Input, Output>(
             outputChan: PChanSend<Output>;
         }
     ) => Promise<void>
-) {
+): TransformedChannelAsync<Input, Output> {
     return function channelFnc(input: PChanReceive<Input>): PChanReceive<Output> {
         // parsing start codes like this takes about 1.5ms per frame on a 5 dollar digital ocean instance. Which... should be fast enough.
         let output = new PChan<Output>();
