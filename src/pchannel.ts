@@ -7,6 +7,7 @@ import { SetTimeoutAsync } from "./controlFlow/promise";
 import { pchan, PChan, SetDefaultTimeout } from "./controlFlow/pChan";
 import { TransformChannel, TransformedChannel, TransformChannelAsync, TransformedChannelAsync } from "./controlFlow/transform";
 import { Deferred } from "./controlFlow/Deferred";
+import { PChanFromArray, PChanFromGenerator } from "./controlFlow/constructors";
 
 // Redeclare all types, so we don't expose our internal modules
 
@@ -58,6 +59,9 @@ export {
     TransformedChannelAsync,
 
     Deferred,
+
+    PChanFromArray,
+    PChanFromGenerator,
 
     _g as g
 };
