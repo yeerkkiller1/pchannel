@@ -1,7 +1,7 @@
 export class Deferred<T> {
     private resolveInternal!: (value: T) => void;
     private rejectInternal!: (error: any) => void;
-    private promise = new Promise((resolve, reject) => {
+    private promise = new Promise<T>((resolve, reject) => {
         this.resolveInternal = resolve;
         this.rejectInternal = reject;
     });
