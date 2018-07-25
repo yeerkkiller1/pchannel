@@ -69,7 +69,8 @@ export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
     }
     public SendError(error: any) {
         if(this.closed) {
-            throw new Error(`Tried to send error on closed connection`);
+            console.error(`Tried to send error on closed connection`);
+            return;
         }
         let getObj = this.getValues.shift();
         if(getObj) {

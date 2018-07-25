@@ -18,6 +18,18 @@ export class Deferred<T> {
         this.rejectInternal(error);
         return this;
     }
+
+    /** Resolves it, using a new internal promise with a new value if this Deferred has previous been resolved or rejected. */
+    public ForceResolve(value: T): this {
+        if(this.value) {
+            let blank = new Deferred<T>();
+            for(let key in Object.keys(blank)) {
+                (this as any)[key] = (blank as any)[key];
+            }
+        }
+        return this.Resolve(value);
+    }
+
     public Promise() {
         return this.promise;
     }
