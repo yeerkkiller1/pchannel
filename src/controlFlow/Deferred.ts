@@ -22,10 +22,11 @@ export class Deferred<T> {
     /** Resolves it, using a new internal promise with a new value if this Deferred has previous been resolved or rejected. */
     public ForceResolve(value: T): this {
         if(this.value) {
-            let blank = new Deferred<T>();
-            for(let key in Object.keys(blank)) {
-                (this as any)[key] = (blank as any)[key];
-            }
+            this.value = undefined;
+            this.promise = new Promise<T>((resolve, reject) => {
+                this.resolveInternal = resolve;
+                this.rejectInternal = reject;
+            });
         }
         return this.Resolve(value);
     }
