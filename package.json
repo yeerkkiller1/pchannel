@@ -3,7 +3,7 @@
     "start": "bash watch.sh"
   },
   "name": "pchannel",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "main": "./dist/pchannel.js",
   "types": "./dist/pchannel.d.ts",
   "author": "yeerkkiller1 <yeerkkiller1@gmail.com>",
@@ -20,7 +20,7 @@
     "run-when-changed": "^2.1.0",
     "source-map-loader": "^0.2.3",
     "ts-loader": "^4.4.1",
-    "typescript": "^2.9.2",
+    "typescript": "3.0.1",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^2.9.4",

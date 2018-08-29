@@ -46,6 +46,10 @@ export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
     // With synchronous handling only one of these lists will have values at once (or none).
     //  BUT, if we added artificial latency, (to simulate a network connection), both lists COULD have values.
 
+    // TODO:
+    // Support peeking (getValues will have to record if they are a peek, and all of our shifts will
+    //  need to handle putting stuff back if it was a peek).
+
     private sentValues: ({ value: (T | PromiseLike<T>) } | { error: any })[] = [];
     private getValues: {
         resolve: (val: T | PromiseLike<T>) => void;

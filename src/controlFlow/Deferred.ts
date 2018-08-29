@@ -8,7 +8,8 @@ export class Deferred<T> {
         this.rejectInternal = reject;
     });
 
-    public Resolve(value: T): this {
+    public Resolve(...values: T extends void ? [T?] : [T]): this {
+        let value = values[0] as T;
         this.value = this.value || { v: value };
         this.resolveInternal(value);
         return this;
@@ -20,7 +21,8 @@ export class Deferred<T> {
     }
 
     /** Resolves it, using a new internal promise with a new value if this Deferred has previous been resolved or rejected. */
-    public ForceResolve(value: T): this {
+    public ForceResolve(...values: T extends void ? [T?] : [T]): this {
+        let value = values[0] as T;
         if(this.value) {
             this.value = undefined;
             this.promise = new Promise<T>((resolve, reject) => {

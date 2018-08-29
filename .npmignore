@@ -3,5 +3,6 @@ npm-debug.log
 .DS_Store
 stats.html
 src
+.vscode
 
 !src/**/*.d.ts
