@@ -23,9 +23,11 @@ export interface PChanReceive<T> {
     Close(): void;
     IsClosedError(err: any): boolean;
 }
+let x!: PChanSend<void>;
+x.SendValue();
 export interface PChanSend<T> {
     OnClosed: Promise<void>;
-    SendValue(value: T): void;
+    SendValue(...values: T extends void ? []|[T | PromiseLike<T>] : [T | PromiseLike<T>]): void;
     SendError(err: any): void;
     IsClosed(): boolean;
     Close(): void;
@@ -60,7 +62,8 @@ export class PChan<T> implements PChanReceive<T>, PChanSend<T> {
         return this.sentValues.length > 0;
     }
 
-    public SendValue(value: T | PromiseLike<T>) {
+    public SendValue(...values: T extends void ? []|[T | PromiseLike<T>] : [T | PromiseLike<T>]) {
+        let value = values[0] as T|PromiseLike<T>;
         if(this.closed) {
             throw new Error(`Tried to send on closed connection`);
         }
