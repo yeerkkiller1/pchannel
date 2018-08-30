@@ -23,8 +23,6 @@ export interface PChanReceive<T> {
     Close(): void;
     IsClosedError(err: any): boolean;
 }
-let x!: PChanSend<void>;
-x.SendValue();
 export interface PChanSend<T> {
     OnClosed: Promise<void>;
     SendValue(...values: T extends void ? []|[T | PromiseLike<T>] : [T | PromiseLike<T>]): void;
