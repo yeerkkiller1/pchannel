@@ -1,7 +1,7 @@
 export class Deferred<T> {
     private value: { v: T }|{error: any}|undefined;
 
-    private resolveInternal!: (value: T) => void;
+    private resolveInternal!: (value: T | PromiseLike<T>) => void;
     private rejectInternal!: (error: any) => void;
     private promise = new Promise<T>((resolve, reject) => {
         this.resolveInternal = resolve;
@@ -21,7 +21,7 @@ export class Deferred<T> {
     }
 
     /** Resolves it, using a new internal promise with a new value if this Deferred has previous been resolved or rejected. */
-    public ForceResolve(...values: T extends void ? [T?] : [T]): this {
+    public ForceResolve(...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this {
         let value = values[0] as T;
         if(this.value) {
             this.value = undefined;
