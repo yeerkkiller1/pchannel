@@ -48,7 +48,8 @@ export class Deferred<T> {
         if(value === undefined) {
             value = value as T;
         }
-        if(this.value) {
+        if(this.resolved) {
+            this.resolved = false;
             this.value = undefined;
             this.promise = new Promise<T>((resolve, reject) => {
                 this.resolveInternal = resolve;
