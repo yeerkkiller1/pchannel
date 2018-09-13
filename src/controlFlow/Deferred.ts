@@ -8,7 +8,7 @@ export class Deferred<T> {
         this.rejectInternal = reject;
     });
 
-    public Resolve(...values: T extends void ? [T?] : [T]): this {
+    public Resolve(...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this {
         let value = values[0] as T;
         this.value = this.value || { v: value };
         this.resolveInternal(value);
