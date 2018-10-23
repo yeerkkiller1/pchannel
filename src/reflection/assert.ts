@@ -263,7 +263,7 @@ export function ThrowsAsync(code: () => Promise<void>): Promise<void> {
         let result = code();
         return new Promise((resolve, reject) => {
             result.then(() => {
-                /* ignore coverage */ reject("Expected an error");
+                /* ignore coverage */ reject(new Error("Expected an error"));
             }).catch(() => {
                 resolve();
             });
