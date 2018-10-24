@@ -258,16 +258,9 @@ export function Throws(code: () => void): void {
     /* ignore coverage */ throw new Error("Expected an error");
 }
 
-export function ThrowsAsync(code: () => Promise<void>): Promise<void> {
+export async function ThrowsAsync(code: () => Promise<void>): Promise<void> {
     try {
-        let result = code();
-        return new Promise((resolve, reject) => {
-            result.then(() => {
-                /* ignore coverage */ reject(new Error("Expected an error"));
-            }).catch(() => {
-                resolve();
-            });
-        });
+        await code();
     } catch(e) {
         return Promise.resolve();    
     }
