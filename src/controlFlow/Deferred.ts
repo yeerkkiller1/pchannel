@@ -13,6 +13,11 @@ export class Deferred<T> {
         this.rejectInternal = reject;
     });
 
+    constructor() {
+        // Prevent uncaught promise rejection death
+        this.promise.catch(() => {});
+    }
+
     public Resolve(...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this {
         if(this.resolved) {
             return this;
@@ -55,6 +60,8 @@ export class Deferred<T> {
                 this.resolveInternal = resolve;
                 this.rejectInternal = reject;
             });
+            // Prevent uncaught promise rejection death
+            this.promise.catch(() => {});
         }
         return this.Resolve(value);
     }
