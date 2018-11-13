@@ -1,5 +1,6 @@
 import { CanHaveChildren, IsArray } from "./type";
 import { JSONStringifyDangerousPretty } from "../format/stringify";
+import { g } from "./misc";
 
 function getPathRaw(object: any, path: string[]): {} {
     for(let i = 0; i < path.length; i++) {
