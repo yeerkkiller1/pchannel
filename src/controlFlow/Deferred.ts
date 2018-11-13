@@ -18,7 +18,7 @@ export class Deferred<T> {
         this.promise.catch(() => {});
     }
 
-    public Resolve(...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this {
+    public Resolve = (...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this => {
         if(this.resolved) {
             return this;
         }
@@ -36,7 +36,7 @@ export class Deferred<T> {
         }
         this.resolveInternal(value);
         return this;
-    }
+    };
     public Reject(error: any): this {
         if(this.resolved) {
             return this;
