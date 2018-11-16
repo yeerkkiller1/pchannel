@@ -30,7 +30,7 @@ export class Deferred<T> {
         if(isPromiseLike(value)) {
             value.then(x => {
                 this.value = { v: x };
-            });
+            }, () => {});
         } else {
             this.value = { v: value };
         }
@@ -63,7 +63,8 @@ export class Deferred<T> {
             // Prevent uncaught promise rejection death
             this.promise.catch(() => {});
         }
-        return this.Resolve(value);
+        // typescript 3.1.6 complains about this line, but it is definitely fine, AND internal to this code, so...
+        return (this.Resolve as any)(value);
     }
 
     public Promise() {
