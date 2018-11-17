@@ -30,7 +30,9 @@ export class Deferred<T> {
         if(isPromiseLike(value)) {
             value.then(x => {
                 this.value = { v: x };
-            }, () => {});
+            }, e => {
+                this.value = { error: e };
+            });
         } else {
             this.value = { v: value };
         }
