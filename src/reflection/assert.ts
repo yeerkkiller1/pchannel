@@ -112,23 +112,37 @@ function unwrapSpecialObjects<T extends Types.AnyAll>(value: T): T {
     }
     return value;
 }
+
+let unwrapSpecialRecursiveDepth = 0;
 function unwrapSpecialRecursive<T extends Types.AnyAll>(data: T): T {
-    if(isOptional(data) || isSortArray(data) || isObjectExact(data)) {
-        return unwrapSpecialRecursive(unwrapSpecialObjects(data));
+    unwrapSpecialRecursiveDepth = 0;
+    return unwrapSpecialRecursiveInside(data); 
+}
+function unwrapSpecialRecursiveInside<T extends Types.AnyAll>(data: T): T {
+    unwrapSpecialRecursiveDepth++;
+    if(unwrapSpecialRecursiveDepth >= 100) {
+        throw new Error(`unwrapSpecialRecursive exceeded max depth ${unwrapSpecialRecursiveDepth}`);
     }
-    if(!CanHaveChildren(data)) return data;
-    if(IsArray(data)) {
-        let newArray: Types.Arr = [];
-        for(let i = 0; i < data.length; i++) {
-            newArray[i] = unwrapSpecialRecursive(data[i]);
+    try {
+        if(isOptional(data) || isSortArray(data) || isObjectExact(data)) {
+            return unwrapSpecialRecursive(unwrapSpecialObjects(data));
         }
-        return newArray as T;
-    } else {
-        let newObj: Types.DictionaryArr = {};
-        for(let key in data) {
-            newObj[key] = unwrapSpecialRecursive(data[key]);
+        if(!CanHaveChildren(data)) return data;
+        if(IsArray(data)) {
+            let newArray: Types.Arr = [];
+            for(let i = 0; i < data.length; i++) {
+                newArray[i] = unwrapSpecialRecursive(data[i]);
+            }
+            return newArray as T;
+        } else {
+            let newObj: Types.DictionaryArr = {};
+            for(let key in data) {
+                newObj[key] = unwrapSpecialRecursive(data[key]);
+            }
+            return newObj as T;
         }
-        return newObj as T;
+    } finally {
+        unwrapSpecialRecursiveDepth--;
     }
 }
 
