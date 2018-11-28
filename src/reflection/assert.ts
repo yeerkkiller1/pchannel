@@ -125,19 +125,19 @@ function unwrapSpecialRecursiveInside<T extends Types.AnyAll>(data: T): T {
     }
     try {
         if(isOptional(data) || isSortArray(data) || isObjectExact(data)) {
-            return unwrapSpecialRecursive(unwrapSpecialObjects(data));
+            return unwrapSpecialRecursiveInside(unwrapSpecialObjects(data));
         }
         if(!CanHaveChildren(data)) return data;
         if(IsArray(data)) {
             let newArray: Types.Arr = [];
             for(let i = 0; i < data.length; i++) {
-                newArray[i] = unwrapSpecialRecursive(data[i]);
+                newArray[i] = unwrapSpecialRecursiveInside(data[i]);
             }
             return newArray as T;
         } else {
             let newObj: Types.DictionaryArr = {};
             for(let key in data) {
-                newObj[key] = unwrapSpecialRecursive(data[key]);
+                newObj[key] = unwrapSpecialRecursiveInside(data[key]);
             }
             return newObj as T;
         }
