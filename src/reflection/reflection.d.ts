@@ -1,5 +1,5 @@
 // https://stackoverflow.com/questions/41476063/typescript-remove-key-from-type-subtraction-type
-type Omit<O, D extends string> = Pick<O, Exclude<keyof O, D>>;
+type Omit<O, D extends (string|number|Symbol)> = Pick<O, Exclude<keyof O, D>>;
 
 declare namespace Types { 
     type ErasedType = string&number;
