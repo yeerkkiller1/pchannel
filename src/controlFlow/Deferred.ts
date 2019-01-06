@@ -39,7 +39,7 @@ export class Deferred<T> {
         this.resolveInternal(value);
         return this;
     };
-    public Reject(error: any): this {
+    public Reject = (error: any): this => {
         if(this.resolved) {
             return this;
         }
@@ -47,10 +47,10 @@ export class Deferred<T> {
         this.value = { error: error };
         this.rejectInternal(error);
         return this;
-    }
+    };
 
     /** Resolves it, using a new internal promise with a new value if this Deferred has previous been resolved or rejected. */
-    public ForceResolve(...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this {
+    public ForceResolve = (...values: T extends void ? [(T | PromiseLike<T>)?] : [T | PromiseLike<T>]): this => {
         let value = values[0];
         if(value === undefined) {
             value = value as T;
@@ -67,13 +67,13 @@ export class Deferred<T> {
         }
         // typescript 3.1.6 complains about this line, but it is definitely fine, AND internal to this code, so...
         return (this.Resolve as any)(value);
-    }
+    };
 
-    public Promise() {
+    public Promise = () => {
         return this.promise;
-    }
+    };
 
-    public Value() {
+    public Value = () => {
         return this.value;
-    }
+    };
 }
